@@ -5,12 +5,14 @@ import { startIngestion } from "./services/ingest.js";
 import { redisClient, initializeRedis } from "./services/redis.js";
 import chatRoutes from "./routes/chat.js";
 
+dotenv.config();
+
 const app = express();
 app.use(cors());
 app.use(express.json());
-dotenv.config();
 
-const PORT = process.env.PORT || 3001;
+// NOT NEEDED FOR VERCEL DEPLOYMENT
+// const PORT = process.env.PORT || 3001;
 
 app.use("/api/chat", chatRoutes);
 
@@ -37,37 +39,51 @@ app.use((req, res) => {
   res.status(404).json({ error: 'Route not found' });
 });
 
-async function startServer() {
-  try {
-    // Initialize services
-    await initializeRedis();
-    // await startIngestion();
+// NOT NEEDED FOR VERCEL DEPLOYMENT
+// async function startServer() {
+//   try {
+//     // Initialize services
+//     await initializeRedis();
+//     await startIngestion();
     
-    app.listen(PORT, () => {
-      console.log(`Server running on port ${PORT}`);
-      console.log(`Health check: http://localhost:${PORT}/health`);
-    });
-  } catch (error) {
-    console.error('Failed to start server:', error);
-    process.exit(1);
-  }
-}
+//     app.listen(PORT, () => {
+//       console.log(`Server running on port ${PORT}`);
+//       console.log(`Health check: http://localhost:${PORT}/health`);
+//     });
+//   } catch (error) {
+//     console.error('Failed to start server:', error);
+//     process.exit(1);
+//   }
+// }
 
 // Graceful shutdown
-process.on('SIGTERM', async () => {
-  console.log('SIGTERM received. Shutting down gracefully...');
-  if (redisClient) {
-    await redisClient.quit();
-  }
-  process.exit(0);
-});
+// process.on('SIGTERM', async () => {
+//   console.log('SIGTERM received. Shutting down gracefully...');
+//   if (redisClient) {
+//     await redisClient.quit();
+//   }
+//   process.exit(0);
+// });
 
-process.on('SIGINT', async () => {
-  console.log('SIGINT received. Shutting down gracefully...');
-  if (redisClient) {
-    await redisClient.quit();
-  }
-  process.exit(0);
-});
+// process.on('SIGINT', async () => {
+//   console.log('SIGINT received. Shutting down gracefully...');
+//   if (redisClient) {
+//     await redisClient.quit();
+//   }
+//   process.exit(0);
+// });
 
-startServer();
+(async () => {
+  try {
+    await initializeRedis();
+    await startIngestion();
+    console.log("redis + ingestion initialized");
+  } catch (err) {
+    console.error("Failed to initialize services:", err);
+  }
+})();
+
+export default app;
+
+// NOT NEEDED FOR VERCEL DEPLOYMENT
+// startServer();
