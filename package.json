@@ -1,0 +1,24 @@
+{
+  "name": "chatbotbackend",
+  "version": "1.0.0",
+  "description": "",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@google/generative-ai": "^0.24.1",
+    "@qdrant/js-client-rest": "^1.15.1",
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.2",
+    "express": "^5.1.0",
+    "node-fetch": "^3.3.2",
+    "redis": "^5.8.2",
+    "rss-parser": "^3.13.0",
+    "uuid": "^13.0.0"
+  }
+}
