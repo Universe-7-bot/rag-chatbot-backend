@@ -188,10 +188,14 @@ export async function startIngestion() {
     await ensureCollection();
     await ingestArticles();
 
-    process.exit(0);
+    console.log("Ingestion finished");
+    // NOT NEEDED FOR VERCEL DEPLOYMENT
+    // process.exit(0);
   } catch (error) {
     console.error("Script failed:", error);
-    process.exit(1);
+    throw error; 
+    // NOT NEEDED FOR VERCEL DEPLOYMENT
+    // process.exit(1);
   }
 }
 
