@@ -77,6 +77,7 @@ app.use((req, res) => {
   try {
     await initializeRedis();
     await startIngestion();
+    
     console.log("redis + ingestion initialized");
   } catch (err) {
     console.error("Failed to initialize services:", err);
